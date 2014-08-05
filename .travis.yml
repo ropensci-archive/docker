@@ -1,15 +1,11 @@
-# Adapted from: https://github.com/lukecyca/travis-docker-example
+# Adapted from: ---https://github.com/lukecyca/travis-docker-example---
+# Adapte from: https://docs.docker.com/installation/ubuntulinux/
 
 install:
-  - sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
-  - sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
+  - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+  - sudo sh -c "echo deb https://get.docker.io/ubuntu docker main  > /etc/apt/sources.list.d/docker.list"
   - sudo apt-get update
-  - sudo mkdir -p /var/lib/docker
-  - echo exit 101 | sudo tee /usr/sbin/policy-rc.d
-  - sudo chmod +x /usr/sbin/policy-rc.d
-  - sudo apt-get install -y slirp lxc lxc-docker aufs-tools cgroup-lite
-  - curl -sLo linux https://github.com/jpetazzo/sekexe/raw/master/uml
-  - chmod +x linux
+  - sudo apt-get install -y lxc-docker
   
 script:
-  - ./linux quiet mem=2G rootfstype=hostfs rw eth0=slirp,,/usr/bin/slirp-fullbolt init=$(pwd)/uml.sh WORKDIR=$(pwd) HOME=$HOME
+  - sudo docker run -i -t ubuntu /bin/bash
