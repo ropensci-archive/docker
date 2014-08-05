@@ -5,4 +5,5 @@ before_install:
   - curl -sSL https://get.docker.io/ubuntu/ | sudo sh
   
 script:
+  - sudo docker -d 
   - sudo docker run ubuntu echo "hello world" 
