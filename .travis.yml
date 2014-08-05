@@ -13,5 +13,3 @@ install:
   
 script:
   - ./linux quiet mem=2G rootfstype=hostfs rw eth0=slirp,,/usr/bin/slirp-fullbolt init=$(pwd)/uml.sh WORKDIR=$(pwd) HOME=$HOME
-  - sudo docker run ubuntu echo 'hello world'
-  - sudo docker build -t ropensci add-r-ropensci 
