@@ -1,9 +1,9 @@
 # Adapted from: ---https://github.com/lukecyca/travis-docker-example---
 # Adapted from: https://docs.docker.com/installation/ubuntulinux/
 
-before_install:
-  - curl -sSL https://get.docker.io/ubuntu/ | sudo sh
+#before_install:
+#  - curl -sSL https://get.docker.io/ubuntu/ | sudo sh
   
-script:
-  - sudo docker -d 
-  - sudo docker run ubuntu echo "hello world" 
+#script:
+#  - sudo docker -d 
+#  - sudo docker run ubuntu echo "hello world" 
