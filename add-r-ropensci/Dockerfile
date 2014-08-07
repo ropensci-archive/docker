@@ -27,9 +27,9 @@ RUN apt-get install -y libxslt1-dev # xslt nees this
 RUN Rscript -e 'install.packages(c("Sxslt"), repo="http://www.omegahat.org/R", type="source")'
 
 ## RStudio server -- not sure this works yet, should open rstudio-server at http://localhost:8707 w user:pw rstudio:rstudio
-RUN apt-get install -y gdebi-core libapparmor1 libcurl4-openssl-dev
+RUN apt-get install -y gdebi-core libapparmor1 libcurl4-openssl-dev wget
 RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb && \
-gdebi -n rstudio-server-0.98.507-amd64.deb && \
+gdebi -n rstudio-server-0.98.994-amd64.deb && \
 rm rstudio-server-*-amd64.deb
 RUN useradd -m rstudio && \
 echo "rstudio:rstudio" | chpasswd
