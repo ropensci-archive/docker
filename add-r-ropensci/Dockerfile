@@ -14,6 +14,8 @@ RUN apt-get install -y --no-install-recommends gcc g++ gfortran libblas-dev libl
 ## Common utilities 
 RUN apt-get install -y git pandoc pandoc-citeproc
 
+
+
 ## CRAN R packages with external dependencies 
 RUN apt-get install -y r-cran-devtools r-cran-xml r-cran-rjava 
 
@@ -23,13 +25,23 @@ RUN Rscript -e 'options(repos=c(CRAN="http://cran.rstudio.com")); devtools::inst
 
 # Duncan packages from Omegahat
 RUN Rscript -e 'install.packages(c("SSOAP", "XMLSchema"), repo="http://www.omegahat.org/R", type="source")'
-
 RUN apt-get install -y libxslt1-dev # xslt nees this
 RUN Rscript -e 'install.packages(c("Sxslt"), repo="http://www.omegahat.org/R", type="source")'
 
+
+
 ## RStudio server
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev
+
+### we need a few more repositories
+RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe" >> /etc/apt/sources.list
+RUN (echo "deb http://cran.mtu.edu/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -q && DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -q )
+
+## We can now install some additional ubuntu binaries
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget
 RUN update-locale
+
+## And now we're ready for rstudio server
 RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb 
 RUN gdebi -n rstudio-server-0.98.994-amd64.deb
 RUN rm rstudio-server-*-amd64.deb
