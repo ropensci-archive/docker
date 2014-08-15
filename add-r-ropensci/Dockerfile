@@ -1,6 +1,10 @@
 FROM eddelbuettel/docker-ubuntu-r:add-r
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 
+ENV DEBIAN-FRONTEND noninteractive
+ENV USERNAME ropensci
+ENV EMAIL ropensci@github.com
+
 ## Add more comprehensive ubuntu repo for CRAN packages
 RUN add-apt-repository -y ppa:marutter/c2d4u
 
@@ -35,10 +39,10 @@ RUN Rscript -e 'install.packages(c("Sxslt"), repo="http://www.omegahat.org/R", t
 ### we need a few more repositories
 RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe" >> /etc/apt/sources.list
 RUN (echo "deb http://cran.mtu.edu/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9)
-RUN (DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -q && DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -q )
+RUN apt-get update -q && apt-get dist-upgrade -yq
 
 ## We can now install some additional ubuntu binaries
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget
+RUN apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget
 RUN update-locale
 
 ## And now we're ready for rstudio server
@@ -46,6 +50,12 @@ RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb
 RUN gdebi -n rstudio-server-0.98.994-amd64.deb
 RUN rm rstudio-server-*-amd64.deb
 RUN useradd -m rstudio && echo "rstudio:rstudio" | chpasswd
+
+## Git configure
+RUN git config --global user.name $USERNAME
+RUN git config --global user.email $EMAIL
+RUN git config --global credential.helper cache
+
 
 ## Configure persistant deamon serving rstudio on 8787
 RUN mkdir -p /var/log/supervisor
