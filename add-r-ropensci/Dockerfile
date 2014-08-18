@@ -8,7 +8,7 @@ RUN apt-get install -y --no-install-recommends gcc g++ gfortran libblas-dev libl
 ## Hadley-verse 
 RUN add-apt-repository -y ppa:marutter/c2d4u && apt-get update -qq
 RUN apt-get install -y pandoc pandoc-citeproc
-RUN apt-get install -y r-cran-devtools r-cran-xml r-cran-rjava 
+RUN apt-get install -y r-cran-devtools r-cran-xml r-cran-rjava r-cran-roxygen2 
 RUN echo 'options("repos"="http://cran.rstudio.com")' > /.Rprofile
 RUN Rscript -e 'devtools::install_github(c("rstudio/rmarkdown", "rstudio/packrat"))'
 
