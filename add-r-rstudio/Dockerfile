@@ -1,10 +1,8 @@
-##
-
 ## Start with Dirk Eddelbuettel's R image, based on minimal ubuntu:14.04 and the current R release.  
+
 
 FROM eddelbuettel/docker-ubuntu-r:add-r
 MAINTAINER Carl Boettiger cboettig@ropensci.org
-
 
 ## User-configurable environmental variables
 ENV DEBIAN-FRONTEND noninteractive
@@ -12,27 +10,16 @@ ENV USER rstudio
 ENV EMAIL rstudio@example.com
 ENV PASSWORD rstudio
 
-## Remain current
-RUN apt-get update -qq
-RUN apt-get dist-upgrade -y
-
-
 
 ## RStudio server
-####  Get Rstudio dependencies
+####  Get Rstudio dependencies. Combining calls helps keep the layer count below 42
 RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe" >> /etc/apt/sources.list
 RUN (echo "deb http://cran.mtu.edu/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9)
-RUN apt-get update -q && apt-get dist-upgrade -yq
-RUN apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget
-RUN update-locale
+RUN apt-get update -q && apt-get dist-upgrade -yq && apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget git && update-locale
 
 #### And now we're ready for rstudio server
-RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb 
-RUN gdebi -n rstudio-server-0.98.994-amd64.deb
-RUN rm rstudio-server-*-amd64.deb
+RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb && gdebi -n rstudio-server-0.98.994-amd64.deb && rm rstudio-server-*-amd64.deb
 RUN useradd -m $USER && echo "$USER:$PASSWORD" | chpasswd
-
-RUN apt-get install -y git 
 
 ## These shell scripts are executed by supervisord when it is run by CMD
 ## They use environmental variables given at runtime to configure the rstudio and git users
