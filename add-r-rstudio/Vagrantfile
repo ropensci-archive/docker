@@ -1,12 +1,18 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-## This Vagrant file uses the default virtual machine, virtualbox
+## Use vagrant to facilitate deploying the docker container cross-platform
+## This Vagrant file uses the default virtual machine, virtualbox, to provide the linux environment
+##
+## USAGE:
+##     vagrant up
+## Then point your browser to http://localhost:8787
+#
 
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.provision :shell, path: "vagrant.sh"
-  config.vm.network "forwarded_port", guest: 8787, host: 8080
+  config.vm.network "forwarded_port", guest: 8787, host: 8787
 end
