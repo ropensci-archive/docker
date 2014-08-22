@@ -8,7 +8,7 @@ RUN apt-get install -y --no-install-recommends gcc g++ gfortran libblas-dev libl
 RUN add-apt-repository -y ppa:marutter/c2d4u && apt-get update -qq
 RUN apt-get install --no-install-recommends -y pandoc pandoc-citeproc r-cran-devtools r-cran-xml r-cran-rjava r-cran-rmysql r-cran-rsqlite libxslt1-dev 
 RUN echo 'options("repos"="http://cran.rstudio.com", encoding="UTF-8")' > /.Rprofile
-RUN Rscript -e 'devtools::install_github(c("rstudio/rmarkdown", "rstudio/packrat", "hadley/devtools", "hadley/ggplot2", "hadley/tidyr", "hadley/dplyr"))'
+RUN Rscript -e 'devtools::install_github(c("rstudio/rmarkdown", "rstudio/packrat", "hadley/devtools", "hadley/ggplot2", "hadley/tidyr", "hadley/dplyr", "hadley/reshape"))'
 
 
 ## Omegahat-verse packages which need external librarues (from above)

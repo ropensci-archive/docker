@@ -7,7 +7,7 @@
 ## USAGE:
 ##     vagrant up
 ## Then point your browser to http://localhost:8787
-#
+## Log into RStudio using the user:pw combination rstudio:rstudio
 
 VAGRANTFILE_API_VERSION = "2"
 
