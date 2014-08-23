@@ -6,13 +6,33 @@
 ##
 ## USAGE:
 ##     vagrant up
-## Then point your browser to http://localhost:8787
+## Then point your browser to http://192.168.33.10:8787
 ## Log into RStudio using the user:pw combination rstudio:rstudio
 
 VAGRANTFILE_API_VERSION = "2"
+Vagrant.require_version ">= 1.6.3"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.provision :shell, path: "vagrant.sh"
-  config.vm.network "forwarded_port", guest: 8787, host: 8787
+  config.vm.define "boot2docker"
+  config.vm.box = "yungsang/boot2docker"
+
+#  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.synced_folder ".", "/vagrant", type: "nfs"
+
+
+   ## Adjust datetime after suspend and resume
+#  config.vm.provision :shell do |s|
+#    s.inline = <<-EOT
+#      sudo /usr/local/bin/ntpclient -s -h pool.ntp.org
+#      date
+#    EOT
+#  end
+
+#  config.vm.provision :docker do |d|
+#    d.pull_images "cboettig/rstudio"
+#    d.run "cboettig/rstudio",
+#      args: "-p 8787:8787",
+#  end
+
+  config.vm.network :forwarded_port, guest: 8787, host: 8888
 end
