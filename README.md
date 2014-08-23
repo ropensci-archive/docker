@@ -88,6 +88,10 @@ for them).  Run this image with:
 vagrant up
 ```
 
+You may want to first adjust the Vagrantfile to allocate more or less
+memory and CPU nodes to the virtual machine.  Vagrant's default is 512 MB
+and 1 CPU, though the file currently puts this at 2 CPUS and 1024 MB RAM.
+
 You can now connect to the RStudio server using some ssh port forwarding:
 
 ```bash
@@ -104,6 +108,8 @@ node where you want R to be running, replacing `<your.server>` with:
 ```bash
 ssh <head.node.name> nc -q0 <compute.node.name> 22
 ```
+
+
 
 ## Author
 
