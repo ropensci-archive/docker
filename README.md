@@ -1,37 +1,94 @@
+## Docker for ROpenSci
 
-## Docker for R on Ubuntu
+This repository provides Dockerfiles for provisioning a completely
+portable environment for reproducible research in R.
 
-This repository contains Dockerfiles defining images which extend the default
-Ubuntu image for Docker. The aim is on making R development and testing easier.
+A user creates an R terminal instance or RStudio Server instance running
+in a complete development environment on either local or cloud computer
+on any major operating system. A user can install new software and save
+changes to their image, see (somewhat coarsely) the history of changes
+made to their image, and roll back to earlier versions.
 
-### Docker Images
+These Dockerfiles build on Dirk's [eddelbuettel/docker-ubuntu-r:add-r]() image,
+which adds the basic current release of the R environment to the `ubuntu:latest` image.
 
-We start from the latest Ubuntu release and then add:
+## Getting started:
 
-* add-r:  This image adds just the R executable. Other images below depend on it.
-* add-r-devel: This image adds a freshly-built R-devel version, as well as
-all tools required to build R-devel from source.
-* add-r-devel-san: This image builds R-devel from source using gcc/g++ 4.8
-with the Address Sanitizer configuration [described in Section 4.3.3 of the
-Writing R Extension manual](http://cran.rstudio.com/doc/manuals/r-devel/R-exts.html#Using-Address-Sanitizer).
+- See [Installing Docker]() for your operating system, or launch a cheap
+cloud instance with [docker already installed]().
 
-### Docker Hub
+- Download and run an R terminal instance: `sudo docker run -it
+cboettig/rstudio /usr/bin/R`
 
-This repository is linked to 
-[this automated build facility at Docker](https://registry.hub.docker.com/u/eddelbuettel/docker-ubuntu-r/)
-and one can retrieve the corresponding images via a standard `docker pull`.
+- Download and run an RStudio server instance: `sudo docker run -d -p
+8787:8787 cboettig/rstudio` - You can now reach your RStudio server
+at `http://<system_ip_address>:8787`.  For Windows/Mac users, run
+`boot2docker ip` to get the value of `system_ip_address`. (This should
+be `http://92.168.59.103:8787` but may vary as it is set dynamically).
+For linux users, you can just use `localhost`.  For cloud instances,
+check your server's public IP address.  - login using the default
+rstudio:rstudio for user:pw, or configure particular users (see below).
 
-### See Also
+## Options
 
-There is a corresponding 
-[Docker for R on Debian repo](https://github.com/eddelbuettel/docker-debian-r) 
-I also maintain which has a few more builds.
+- Replace `cboettig/rstudio` with `cboettig/ropensci` to run a richer (but larger) development environment.  See below for details.
+- Set user name and password using environmental variables, e.g.
 
-### Author
+```bash
+docker run -d -p 8787:8787 -e USER=<username> -e PASSWORD=<password> -e EMAIL=you@somewhere.com cboettig/rstudio
+```
+- Link the container to a local folder.
 
-Dirk Eddelbuettel
 
-### License
 
-GPL (>= 2)
+These commands will be slow on the first run since the image must be
+downloaded.  Afterwards they should be pretty quick.
 
+## rstudio Dockerfile
+
+The `rstudio` Dockerfile adds an RStudio server and git.  You can also set
+the user name, user email, and login password as environmental variables.
+The user name is used for RStudio login and as the git user. The email
+address is only used to set the git email configuration (required for
+commits).  The password is used only for the Rstudio login (and sudo
+commands in a bash shell in the container).  If these variables are not
+provided, they default to `rstudio`, `rstudio` and `rstudio@example.com`.
+(While this is fine when running docker locally, you probably don't want
+to use these defaults on a webserver with a public IP address).
+
+Builds of this image from this Dockerfile are avialble on through the
+Dockerhub as `cboettig/rstudio`.
+
+## ropensci Dockerfile
+
+The `ropensci` Dockerfile provides a rich development environment for R.
+This environment builds on `rstudio`, but adds the standard compiler tools
+required to build R, LaTeX and pandoc support, commonly used packages
+from Rstudio and the Hadleyverse (including their suggested dependencies),
+and some useful Omegahat packages that also require additional libraries.
+
+## Remote Linux clusters without root
+
+You can run the docker images on a remote linux cluster where you don't
+have root access, even if it doesn't have a web-accessible API (such as
+a university server).  Ask your friendly system administrator to install
+vagrant and virtualbox.  Then we can use a lightweight virtualbox in
+which we can run Docker (this is just what boot2docker does in windows
+and mac, in fact, we'll use an image based on boot2docker since it has
+just what we need, and at just 24 MB is way smaller than a standard
+ubuntu virtualbox image).
+
+A Vagrantfile for getting up and running with this image is found in the
+`vagrant` directory.  This handles exporting ports to the host machine,
+and sharing files with the host machine (which can also be tricky
+for boot2docker users on Mac/Windows, so this might be a work-around
+for them).
+
+
+## Author
+
+Carl Boettiger <cboettig@ropensci.org>
+
+## License
+
+MIT
