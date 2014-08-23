@@ -82,8 +82,28 @@ A Vagrantfile for getting up and running with this image is found in the
 `vagrant` directory.  This handles exporting ports to the host machine,
 and sharing files with the host machine (which can also be tricky
 for boot2docker users on Mac/Windows, so this might be a work-around
-for them).
+for them).  Run this image with:
 
+```bash
+vagrant up
+```
+
+You can now connect to the RStudio server using some ssh port forwarding:
+
+```bash
+ssh -o "ExitOnForwardFailure yes" -f -N -L 8787:localhost:8888 <your.server>
+```
+
+The first number (8787) is the port we want things to appear on localhost,
+e.g. we can now connect by visiting http://localhost:8787.  The scond
+(8888) is the port we configured for the host machine with Vagrant.
+
+Note that sometimes you need to tunnel through a head node to the compute
+node where you want R to be running, replacing `<your.server>` with:
+
+```bash
+ssh <head.node.name> nc -q0 <compute.node.name> 22
+```
 
 ## Author
 
