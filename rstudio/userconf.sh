@@ -5,4 +5,5 @@ git config --global user.name $USER
 git config --global user.email $EMAIL
 git config --global credential.helper cache
 cp /.gitconfig /home/$USER
+rsync -a /tmp/ /home/$USER/
 chown -R $USER:$USER /home/$USER
