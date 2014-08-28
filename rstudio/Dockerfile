@@ -1,5 +1,4 @@
-## Start with Dirk Eddelbuettel's R image, based on minimal ubuntu:14.04 and the current R release.  
-
+## Start with Dirk Eddelbuettel's R image, based on minimal ubuntu:latest and the current R release.
 
 FROM eddelbuettel/docker-ubuntu-r:add-r
 MAINTAINER Carl Boettiger cboettig@ropensci.org
