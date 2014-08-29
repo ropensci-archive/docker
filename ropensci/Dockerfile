@@ -21,6 +21,8 @@ RUN Rscript -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt"), repo="http://
 ## rhdf5
 RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE)'
 
+## rdf tools
+RUN Rscript -e 'devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_vignettes=FALSE); devtools::install_github("egonw/rrdf", subdir="rrdf", build_vignettes=FALSE)'
 
 ## No CMD is needed: imported from cboettig/rstudio. 
 ## This Configures a persistent daemon running RStudio-server on (container) port 8787
