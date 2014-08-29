@@ -12,7 +12,7 @@ sources etc.
 ### Docker Hub
 
 The GitHub  repository is linked to
-[this automated build facility at Docker](https://registry.hub.docker.com/u/cboettig/docker-ubuntu-r/)
+[this automated build facility at Docker](https://registry.hub.docker.com/u/cboettig/ropensci-docker/)
 and one can retrieve the corresponding images via a standard `docker pull`.
 
 ### Author
