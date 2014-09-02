@@ -9,7 +9,12 @@ git config --global user.email $EMAIL
 git config --global credential.helper cache
 cp /.gitconfig /home/$USER
 
+## Global config make page-up/down search history
+echo '"\e[5~": history-search-backward' >> /etc/inputrc && echo '"\e[6~": history-search-backward' >> /etc/inputrc
+
+
 ## Sync files placed in host to user's home directory (for non-root access, eg in rstudio)
+mkdir -p /host
 rsync -a /host/ /home/$USER/
 
 ## Give user access over their own home directory
