@@ -12,7 +12,9 @@ ENV PASSWORD rstudio
 
 ## Download and install RStudio server
 RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe" >> /etc/apt/sources.list
-RUN apt-get update -q && apt-get dist-upgrade -yq && apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget git && update-locale
+RUN apt-get update -q && apt-get dist-upgrade -yq && apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget git
+RUN apt-get -qqy install debconf locales && dpkg-reconfigure locales
+RUN wget http://ftp.us.debian.org/debian/pool/main/o/openssl/libssl0.9.8_0.9.8o-4squeeze14_amd64.deb && sudo dpkg -i libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
 RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb && gdebi -n rstudio-server-0.98.994-amd64.deb && rm rstudio-server-*-amd64.deb
 
 ## Create a user with default variables in case none are supplied at runtime.  

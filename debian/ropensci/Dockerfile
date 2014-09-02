@@ -25,12 +25,11 @@ RUN apt-get install -qqy --no-install-recommends gcc g++ gfortran libblas-dev li
 RUN apt-get install -qqy --no-install-recommends texlive-humanities lmodern texlive-fonts-recommended texlive-latex-extra imagemagick pandoc pandoc-citeproc 
 
 RUN echo 'options("repos"="http://cran.rstudio.com", encoding="UTF-8")' > /.Rprofile
-RUN Rscript -e 'install.packages(c("shiny", "dplyr", "tidyr", "mg", "MonetDB.R))'
-RUN Rscript -e 'devtools::install_github(c("rstudio/packrat", "hadley/reshape"));'
+RUN Rscript -e 'install.packages(c("shiny", "dplyr", "tidyr", "mg", "MonetDB.R"))'
 RUN Rscript -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt"), repo="http://www.omegahat.org/R", type="source")'
 RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE)' 
 RUN Rscript -e 'devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_vignettes=FALSE); devtools::install_github("egonw/rrdf", subdir="rrdf", build_vignettes=FALSE)'
-RUN Rscript -e 'devtools::install_github("hadley/devtools", "rstudio/rmarkdown");'
+RUN Rscript -e 'devtools::install_github(c("rstudio/rmarkdown", "rstudio/packrat", "hadley/reshape"));'
 
 ## Shiny
 RUN wget http://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.2.1.362-amd64.deb && sudo gdebi --non-interactive shiny-server-*.deb
