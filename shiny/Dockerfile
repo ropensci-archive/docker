@@ -3,9 +3,11 @@ MAINTAINER Carl Boettiger cboettig@ropensci.org
 
 ## Shiny
 RUN apt-get -qq update && apt-get -qqy install gdebi
-RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
+RUN update-locale
+#RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales 
 RUN Rscript -e 'install.packages("shiny", repos="http://cran.rstudio.com")'
-RUN wget http://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.2.1.362-amd64.deb && sudo gdebi --non-interactive shiny-server-*.deb
+RUN wget http://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.2.1.362-amd64.deb 
+#RUN echo 'LANG="en_US.UTF-8"' /etc/default/locale
+RUN sudo gdebi --non-interactive shiny-server-*.deb
 EXPOSE 3838
  
-
