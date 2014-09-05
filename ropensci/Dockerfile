@@ -24,10 +24,6 @@ RUN Rscript -e 'devtools::install_github(c("rstudio/rmarkdown", "rstudio/packrat
 RUN Rscript -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt"), repo="http://www.omegahat.org/R", type="source")'
 RUN Rscript -e 'devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_vignettes=FALSE); devtools::install_github("egonw/rrdf", subdir="rrdf", build_vignettes=FALSE)'
 
-## Shiny  # 176 MB
-RUN wget http://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.2.1.362-amd64.deb && sudo gdebi --non-interactive shiny-server-*.deb
-EXPOSE 3838
-
 ## No CMD is needed: imported from cboettig/rstudio. 
 ## This Configures a persistent daemon running RStudio-server on (container) port 8787
 ## Otherwise, run interactively with /bin/batch where command is ignored.  
