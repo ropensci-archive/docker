@@ -118,3 +118,7 @@ Carl Boettiger <cboettig@ropensci.org>
 ## License
 
 MIT
+
+## Trademark
+
+RStudio and Shiny are registered trademarks of RStudio, Inc.  The use and distribution of these RStudio Marks with the RStudio binaries through these images hosted on [hub.docker.com](https://registry.hub.docker.com/u/cboettig/rstudio/) has been granted by explicit permission of RStudio, as described under [RStudio's trademark use policy](http://www.rstudio.com/about/trademark/). Address inqueries about further distribution or other questions to [permissions@rstudio.com](emailto:permissions@rstudio.com).
