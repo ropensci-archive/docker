@@ -10,7 +10,12 @@ portable environment for reproducible research in R.
 On a Mac or Windows machine, you'll need boot2docker
 installed (easy point & click install, ~24 MB).
 ([[Mac](https://docs.docker.com/installation/mac/)],
-[[Windows](https://docs.docker.com/installation/windows/)])
+[[Windows](https://docs.docker.com/installation/windows/)]).
+_**Note**: Requires a docker version `>= 1.2`, so please make sure
+you have a recent version of docker available. Linux users
+should use the curl script [provided by Docker](https://docs.docker.com/installation/ubuntulinux/) rather than the
+older version available in the distro repository. Docker
+only runs on 64 bit machines at this time._
 
 
 1) Launch boot2docker, and do:

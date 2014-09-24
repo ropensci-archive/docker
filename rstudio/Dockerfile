@@ -15,8 +15,8 @@ RUN apt-get update -q && apt-get dist-upgrade -yq && apt-get install -y -q gdebi
 RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb && gdebi -n rstudio-server-0.98.994-amd64.deb && rm rstudio-server-*-amd64.deb
 
 ## This shell script is executed by supervisord when it is run by CMD, configures env variables
+## We don't want to RUN userconf.sh so that this won't be set in interactive mode, which seems to create potential conflicts
 ADD userconf.sh /usr/bin/userconf.sh
-RUN /usr/bin/userconf.sh
 
 ## Configure persistent daemon serving RStudio-server on (container) port 8787
 RUN mkdir -p /var/log/supervisor
