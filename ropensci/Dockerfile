@@ -1,33 +1,30 @@
-FROM cboettig/rstudio 
+## Start with the rstudio image providing 'base R' as well as RStudio based on Debian testing
+FROM eddelbuettel/debian-hadleyverse
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 
-## Add CRAN binaries and update
-RUN add-apt-repository -y ppa:marutter/c2d4u && apt-get update -qq && apt-get upgrade -qy 
+## Refresh package list and upgrade
+RUN apt-get -qq update && apt-get -qqy dist-upgrade
+## Install build dependencies
+RUN apt-get install -qqy --no-install-recommends libxslt1-dev 
 
+## Install Omegahat dependencies 
+RUN echo 'options("repos"="http://cran.rstudio.com", encoding="UTF-8")' > .Rprofile
+RUN r -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt", "RWordXML", "RHTMLForms"), repo="http://www.omegahat.org/R", type="source")'
 
-## From the Build-Depends of the Debian R package: 968 MB!
-RUN apt-get install -y --no-install-recommends gcc g++ gfortran libblas-dev liblapack-dev tcl8.5-dev tk8.5-dev bison groff-base libncurses5-dev libreadline-dev debhelper texinfo libbz2-dev liblzma-dev libpcre3-dev xdg-utils zlib1g-dev libpng-dev libjpeg-dev libx11-dev libxt-dev x11proto-core-dev libpango1.0-dev libcairo2-dev libtiff5-dev xvfb xauth xfonts-base texlive-base texlive-latex-base texlive-generic-recommended texlive-fonts-recommended texlive-fonts-extra texlive-extra-utils texlive-latex-recommended texlive-latex-extra default-jdk mpack bash-completion 
-
-## rmarkdown-related dependencies: 146 MB
-RUN apt-get install -y --no-install-recommends pandoc pandoc-citeproc texlive-humanities lmodern texlive-fonts-recommended texlive-latex-extra imagemagick librsvg2-bin ghostscript
-
-## R binaries: 149 MB 
-RUN apt-get install -y r-cran-dplyr r-cran-devtools r-cran-rcpp r-cran-xml r-cran-rjava r-cran-rmysql r-cran-rsqlite libxslt1-dev r-cran-rsqlite.extfuns r-cran-rmysql r-cran-data.table r-cran-testthat r-cran-knitr r-cran-ggplot2 r-cran-mgcv r-cran-mass r-cran-tidyr r-cran-shiny r-cran-monetdb.r libxslt1-dev libpq-dev 
-
-## Not avaiable on marutter/c2d4u
-# r-cran-rstudioapi r-cran-microbenchmark r-cran-rpostgresql r-cran-roxygen2
-
-## R package installs from source 
-## (packages for which approriate binaries are not available)
-RUN echo 'options("repos"="http://cran.rstudio.com", encoding="UTF-8")' > /.Rprofile
-RUN Rscript -e 'install.packages(c("RPostgreSQL", "roxygen2", "microbenchmark", "rstudioapi"))'
-RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE); biocLite("BiocInstaller")'
-RUN Rscript -e 'devtools::install_github(c("rstudio/rmarkdown", "rstudio/packrat", "hadley/bigrquery", "hadley/reshape"))'
-RUN Rscript -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt"), repo="http://www.omegahat.org/R", type="source")'
+## Install Github dependencies
+RUN Rscript -e 'devtools::install_github("DataONEorg/rdataone", subdir="dataonelibs"); devtools::install_github("ropensci/rdataone", subdir="dataone", dependencies=NA)'
 RUN Rscript -e 'devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_vignettes=FALSE); devtools::install_github("egonw/rrdf", subdir="rrdf", build_vignettes=FALSE)'
 
-## No CMD is needed: imported from cboettig/rstudio. 
-## This Configures a persistent daemon running RStudio-server on (container) port 8787
-## Otherwise, run interactively with /bin/batch where command is ignored.  
+## Install build dependencies
+RUN apt-get install -qy libgeos-dev libgeos-c1 gdal-bin libgdal1h libgdal1-dev netcdf-bin libproj-dev
 
+# r-cran-rgeos not available on debian..
+#&& apt-get build-dep r-cran-rgdal not working. (nor for r-cran-rgeos. r-cran-rgdal not actually installable for debian). Oh well, install manually instead.  
 
+## Install the rOpenSci R packages that are currently on CRAN
+RUN install2.r spocc AntWeb ecoengine rebird rAvis rfisheries rWBClimate treebase rfishbase rbhl rgbif taxize rsnps rentrez paleobioDB rnoaa rdryad gender RSelenium reol rinat rbison bold rplos aRxiv rAltmetric alm rfigshare dvn RNeXML solr
+
+## Install rhdf5 
+# RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE); biocLite("BiocInstaller")'
+
+## Consider installing all packages from Github as well? Maybe to a different library location that isn't automatically loaded?  
