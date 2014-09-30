@@ -1,21 +1,18 @@
-## Start with the rocker image providing 'base R' using a small Debian testing installation and the current R release
-FROM eddelbuettel/debian-r-base
+## Start with Dirk Eddelbuettel's R image, based on minimal ubuntu:latest and the current R release.
 
+FROM eddelbuettel/docker-ubuntu-r:add-r
 MAINTAINER Carl Boettiger cboettig@ropensci.org
+
+## User-configurable environmental variables. -- could set these defaults in the shell script userconf.sh instead
 ENV DEBIAN-FRONTEND noninteractive
 
-## Stay up-to-date (modulo caching) 
-RUN apt-get update -q && apt-get dist-upgrade -yq 
-
 ## Download and install RStudio server
-RUN apt-get install -yq supervisor sudo libcurl4-openssl-dev \
-git locales psmisc && dpkg-reconfigure locales \
-&& wget -q http://ftp.us.debian.org/debian/pool/main/o/openssl/libssl0.9.8_0.9.8o-4squeeze14_amd64.deb \ 
-&& dpkg -i libssl0.9.8_0.9.8o-4squeeze14_amd64.deb && rm libssl0.9.8_0.9.8o-4squeeze14_amd64.deb \
-&& wget -q http://download2.rstudio.org/rstudio-server-0.98.1062-amd64.deb \
-&& dpkg -i rstudio-server-0.98.1062-amd64.deb && rm rstudio-server-*-amd64.deb
+RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe" >> /etc/apt/sources.list
+RUN apt-get update -q && apt-get dist-upgrade -yq && apt-get install -y -q gdebi-core libapparmor1 supervisor sudo libcurl4-openssl-dev wget git && update-locale
+RUN wget http://download2.rstudio.org/rstudio-server-0.98.994-amd64.deb && gdebi -n rstudio-server-0.98.994-amd64.deb && rm rstudio-server-*-amd64.deb
 
 ## This shell script is executed by supervisord when it is run by CMD, configures env variables
+## We don't want to RUN userconf.sh so that this won't be set in interactive mode, which seems to create potential conflicts
 ADD userconf.sh /usr/bin/userconf.sh
 
 ## Configure persistent daemon serving RStudio-server on (container) port 8787
@@ -25,5 +22,6 @@ EXPOSE 8787
 
 ## To have a container run multiple & persistent tasks, we use the very simple supervisord as recommended in Docker documentation.
 CMD ["/usr/bin/supervisord"] 
+
 
 
