@@ -1,4 +1,6 @@
 ## Start with the rstudio image providing 'base R' as well as RStudio based on Debian testing
+## Published on DockerHub as cboettig/ropensci:dev 
+
 FROM cboettig/ropensci 
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 

@@ -1,5 +1,5 @@
 ## Start with the rstudio image providing 'base R' as well as RStudio based on Debian testing
-FROM eddelbuettel/debian-hadleyverse
+FROM eddelbuettel/ubuntu-hadleyverse
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 
 ## Refresh package list and upgrade
@@ -16,9 +16,8 @@ RUN Rscript -e 'devtools::install_github("DataONEorg/rdataone", subdir="dataonel
 RUN Rscript -e 'devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_vignettes=FALSE); devtools::install_github("egonw/rrdf", subdir="rrdf", build_vignettes=FALSE)'
 
 ## Install build dependencies
-RUN apt-get install -qy libgeos-dev libgeos-c1 gdal-bin libgdal1h libgdal1-dev netcdf-bin libproj-dev
-
-# We'd rather install build dependencies with apt-get build-dep, since we can reference the r binary names directly and not have to manually parse out the dependencies above.  Unfortunately, r-cran-rgeos and r-cran-rgdal are not available on the debian build so we've constructed the install dependencies list manually.
+#RUN apt-get install -qy libgeos-dev libgeos-c1 gdal-bin libgdal1 libgdal1-dev netcdf-bin libproj-dev
+RUN apt-get build-dep r-cran-rgeos r-cran-rgdal
 
 ## Install the rOpenSci R packages that are currently on CRAN
 RUN install2.r spocc AntWeb ecoengine rebird rAvis rfisheries treebase rfishbase rbhl rgbif taxize rsnps rentrez paleobioDB rnoaa rdryad RSelenium rinat rbison bold rplos aRxiv rAltmetric alm rfigshare dvn RNeXML solr Reol rWBclimate
