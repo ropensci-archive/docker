@@ -17,7 +17,7 @@ RUN Rscript -e 'devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_
 
 ## Install build dependencies
 #RUN apt-get install -qy libgeos-dev libgeos-c1 gdal-bin libgdal1 libgdal1-dev netcdf-bin libproj-dev
-RUN apt-get build-dep r-cran-rgeos r-cran-rgdal
+RUN apt-get build-dep -y r-cran-rgeos r-cran-rgdal
 
 ## Install the rOpenSci R packages that are currently on CRAN
 RUN install2.r spocc AntWeb ecoengine rebird rAvis rfisheries treebase rfishbase rbhl rgbif taxize rsnps rentrez paleobioDB rnoaa rdryad RSelenium rinat rbison bold rplos aRxiv rAltmetric alm rfigshare dvn RNeXML solr Reol rWBclimate
