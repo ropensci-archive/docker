@@ -8,7 +8,7 @@ MAINTAINER Carl Boettiger cboettig@ropensci.org
 RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE); biocLite("BiocInstaller")'
 
 ## Github-dev versions of the R packages already on CRAN
-RUN Rscript -e 'devtools::install_github(paste0("ropensci/",c("spocc", "AntWeb", "ecoengine", "rebird", "rAvis", "rfisheries", "treebase", "rfishbase", "rbhl", "rgbif", "taxize", "rsnps", "rentrez", "paleobioDB", "rnoaa", "rdryad", "RSelenium", "rinat", "rbison", "bold", "rplos", "aRxiv", "rAltmetric", "alm", "rfigshare", "dvn", "RNeXML", "solr", "Reol", "rWBclimate")))'
+RUN Rscript -e 'devtools::install_github(paste0("ropensci/",c("rinat", "spocc", "AntWeb", "ecoengine", "rebird", "rfisheries", "treebase", "rbhl", "rgbif", "taxize", "rsnps", "rentrez", "rnoaa", "rdryad", "RSelenium", "rbison", "bold", "rplos", "aRxiv", "rAltmetric", "alm", "rfigshare", "dvn", "RNeXML", "solr", "Reol", "rWBclimate")))'
 
 ## Packages not yet on CRAN
 RUN Rscript -e 'devtools::install_github(paste0("ropensci/", c("rnpn", "rvertnet", "gender", "geonames", "clifro", "ecoretriever", "traits", "rebi", "rorcid", "elife", "rdatacite", "bmc", "rcrossref", "rmetadata", "EML", "git2r", "testdat", "gistr", "elastic", "plotly", "togeojson")))'
@@ -19,4 +19,4 @@ RUN Rscript -e 'devtools::install_github("ramnathv/rCharts"); install.packages("
 ## Packages needing further configuration before install will work: 
 RUN Rscript -e 'devtools::install_github(paste0("ropensci/", c("fulltext", "rMaps")))'
 
-
+#RUN Rscript -e 'devtools::install_github(paste0("ropensci/", c(rfishbase", "paleobioDB", "rAvis")) 
