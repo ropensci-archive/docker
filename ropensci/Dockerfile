@@ -12,8 +12,7 @@ RUN echo 'options("repos"="http://cran.rstudio.com", encoding="UTF-8")' > .Rprof
 RUN r -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt", "RWordXML", "RHTMLForms"), repo="http://www.omegahat.org/R", type="source")'
 
 ## Install Github dependencies
-RUN Rscript -e 'devtools::install_github("DataONEorg/rdataone", subdir="dataonelibs"); devtools::install_github("ropensci/rdataone", subdir="dataone", dependencies=NA)'
-RUN Rscript -e 'devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_vignettes=FALSE); devtools::install_github("egonw/rrdf", subdir="rrdf", build_vignettes=FALSE)'
+RUN Rscript -e 'devtools::install_github("DataONEorg/rdataone/dataonelibs", "ropensci/rdataone/dataone", "egonw/rrdf/rrdflibs","egonw/rrdf/rrdf",  dependencies=NA, build_vignettes=FALSE)'
 
 ## Install build dependencies
 #RUN apt-get install -qy libgeos-dev libgeos-c1 gdal-bin libgdal1 libgdal1-dev netcdf-bin libproj-dev
