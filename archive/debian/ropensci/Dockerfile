@@ -30,7 +30,7 @@ RUN Rscript -e 'devtools::install_github(c("DataONEorg/rdataone/dataonelibs", "r
 #RUN apt-get build-dep -y r-cran-rgeos r-cran-rgdal
 
 ## Install the rOpenSci R packages that are currently on CRAN
-RUN install2.r 
+RUN install2.r \ 
   alm \
   AntWeb \
   aRxiv \
