@@ -12,11 +12,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgdal1-dev \
     netcdf-bin \
     libproj-dev
+
+
 ## Install Omegahat dependencies 
-RUN r -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt", "RWordXML", "RHTMLForms"), repo="http://www.omegahat.org/R", type="source")'
+RUN install2.r -r http://www.omegahat.org/R \
+    RHTMLForms \
+    RWordXML \
+    SSOAP \
+    Sxslt \
+    XMLSchema
 
 ## Install Github dependencies
-RUN Rscript -e 'devtools::install_github("DataONEorg/rdataone", subdir="dataonelibs"); devtools::install_github("ropensci/rdataone", subdir="dataone", dependencies=NA); devtools::install_github("egonw/rrdf", subdir="rrdflibs", build_vignettes=FALSE); devtools::install_github("egonw/rrdf", subdir="rrdf", build_vignettes=FALSE)'
+RUN Rscript -e 'devtools::install_github(c("DataONEorg/rdataone/dataonelibs", "ropensci/rdataone/dataone", "egonw/rrdf/rrdflibs","egonw/rrdf/rrdf"),  dependencies=NA, build_vignettes=FALSE)'
+
 
 ## Install build dependencies
 #RUN apt-get build-dep -y r-cran-rgeos r-cran-rgdal

@@ -2,23 +2,57 @@
 FROM eddelbuettel/ubuntu-hadleyverse
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 
-## Refresh package list and upgrade
-RUN apt-get -qq update && apt-get -qqy dist-upgrade
-## Install build dependencies
-RUN apt-get install -qqy --no-install-recommends libxslt1-dev 
+## Update and install library dependencies 
+RUN apt-get update && apt-get install -y --no-install-recommends libxslt1-dev 
 
 ## Install Omegahat dependencies 
-RUN echo 'options("repos"="http://cran.rstudio.com", encoding="UTF-8")' > .Rprofile
-RUN r -e 'install.packages(c("SSOAP", "XMLSchema", "Sxslt", "RWordXML", "RHTMLForms"), repo="http://www.omegahat.org/R", type="source")'
+RUN install2.r -r http://www.omegahat.org/R \
+    RHTMLForms \
+    RWordXML \
+    SSOAP \
+    Sxslt \
+    XMLSchema
 
 ## Install Github dependencies
-RUN Rscript -e 'devtools::install_github("DataONEorg/rdataone/dataonelibs", "ropensci/rdataone/dataone", "egonw/rrdf/rrdflibs","egonw/rrdf/rrdf",  dependencies=NA, build_vignettes=FALSE)'
+RUN Rscript -e 'devtools::install_github(c("DataONEorg/rdataone/dataonelibs", "ropensci/rdataone/dataone", "egonw/rrdf/rrdflibs","egonw/rrdf/rrdf"),  dependencies=NA, build_vignettes=FALSE)'
 
 ## Install build dependencies
 #RUN apt-get install -qy libgeos-dev libgeos-c1 gdal-bin libgdal1 libgdal1-dev netcdf-bin libproj-dev
 RUN apt-get build-dep -y r-cran-rgeos r-cran-rgdal
 
-## Install the rOpenSci R packages that are currently on CRAN
-RUN install2.r spocc AntWeb ecoengine rebird rAvis rfisheries treebase rfishbase rbhl rgbif taxize rsnps rentrez paleobioDB rnoaa rdryad RSelenium rinat rbison bold rplos aRxiv rAltmetric alm rfigshare dvn RNeXML solr Reol rWBclimate
+## Install additional package dependencies / commonly used packages
+RUN install2.r pander knitcitations
 
+## Install the rOpenSci R packages that are currently on CRAN
+RUN install2.r 
+  alm \
+  AntWeb \
+  aRxiv \
+  bold \
+  dvn \
+  ecoengine \
+  paleobioDB \
+  rAltmetric \
+  rAvis \
+  rbhl \
+  rbison \
+  rdryad \
+  rebird \
+  rentrez \
+  Reol \
+  rfigshare \
+  rfishbase \
+  rfisheries \
+  rgbif \
+  rinat \
+  RNeXML \
+  rnoaa \
+  rplos \
+  RSelenium \
+  rsnps \
+  rWBclimate \
+  solr \
+  spocc \
+  taxize \
+  treebase 
 
