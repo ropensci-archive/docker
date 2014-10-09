@@ -1,5 +1,5 @@
 ## Start with the rstudio image providing 'base R' as well as RStudio based on Debian testing
-FROM eddelbuettel/debian-hadleyverse
+FROM rocker/hadleyverse
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 
 ## Refresh package list and upgrade
