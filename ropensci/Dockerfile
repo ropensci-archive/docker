@@ -20,17 +20,18 @@ RUN install2.r -r http://www.omegahat.org/R \
     RWordXML \
     SSOAP \
     Sxslt \
-    XMLSchema
+    XMLSchema \
+    Rcompression
 
 ## Install Github dependencies
 RUN Rscript -e 'devtools::install_github(c("DataONEorg/rdataone/dataonelibs", "ropensci/rdataone/dataone", "egonw/rrdf/rrdflibs","egonw/rrdf/rrdf"),  dependencies=NA, build_vignettes=FALSE)'
 
 
-## Install build dependencies
+## Install build dependencies (not avaialble for Debian)
 #RUN apt-get build-dep -y r-cran-rgeos r-cran-rgdal
 
 ## Install the rOpenSci R packages that are currently on CRAN
-RUN install2.r \ 
+RUN install2.r --error --deps TRUE \
   alm \
   AntWeb \
   aRxiv \
@@ -60,6 +61,6 @@ RUN install2.r \
   solr \
   spocc \
   taxize \
-  treebase 
-
+  treebase \
+&& rm -rf /tmp/downloaded_packages/
 
