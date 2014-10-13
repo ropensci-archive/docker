@@ -12,7 +12,7 @@ RUN installGithub.r --deps TRUE ramnathv/rCharts \
 
 ## Github-dev versions of the R packages already on CRAN
 ## Non-alphabetized since order reflects package dependencies
-RUN installGithub --deps TRUE \ 
+RUN installGithub.r --deps TRUE \ 
     ropensci/rinat \
 		ropensci/spocc \
 		ropensci/AntWeb \
@@ -44,7 +44,7 @@ RUN installGithub --deps TRUE \
 
 ## Packages not yet on CRAN
 ## Non-alphabetized since order reflects package dependencies
-RUN installGithub --deps TRUE \
+RUN installGithub.r --deps TRUE \
     ropensci/rnpn \
 		ropensci/rvertnet \
 		ropensci/gender \
