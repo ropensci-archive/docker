@@ -6,9 +6,10 @@ MAINTAINER Carl Boettiger cboettig@ropensci.org
 
 
 ## Additional dependencies
-RUN installGithub.r --deps TRUE ramnathv/rCharts \    
-&& install.r --repos http://datacube.wu.ac.at Rcampdf \
-&& Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE); biocLite("BiocInstaller")'
+RUN installGithub.r ramnathv/rCharts \
+&& install2.r --error --repos http://datacube.wu.ac.at Rcampdf \
+&& Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE); biocLite("BiocInstaller")' \
+&& rm -rf /tmp/downloaded_packages/
 
 ## Github-dev versions of the R packages already on CRAN
 ## Non-alphabetized since order reflects package dependencies
