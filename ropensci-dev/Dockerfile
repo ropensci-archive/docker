@@ -1,22 +1,77 @@
 ## Start with the rstudio image providing 'base R' as well as RStudio based on Debian testing
 ## Published on DockerHub as cboettig/ropensci:dev 
 
-FROM cboettig/ropensci 
+FROM rocker/ropensci 
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 
-## Install rhdf5 
-RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE); biocLite("BiocInstaller")'
-
-## Github-dev versions of the R packages already on CRAN
-RUN Rscript -e 'devtools::install_github(paste0("ropensci/",c("rinat", "spocc", "AntWeb", "ecoengine", "rebird", "rfisheries", "treebase", "rbhl", "rgbif", "taxize", "rsnps", "rentrez", "rnoaa", "rdryad", "RSelenium", "rbison", "bold", "rplos", "aRxiv", "rAltmetric", "alm", "rfigshare", "dvn", "RNeXML", "solr", "Reol", "rWBclimate")))'
-
-## Packages not yet on CRAN
-RUN Rscript -e 'devtools::install_github(paste0("ropensci/", c("rnpn", "rvertnet", "gender", "geonames", "clifro", "ecoretriever", "traits", "rebi", "rorcid", "elife", "rdatacite", "bmc", "rcrossref", "rmetadata", "EML", "git2r", "testdat", "gistr", "elastic", "plotly", "togeojson")))'
 
 ## Additional dependencies
-RUN Rscript -e 'devtools::install_github("ramnathv/rCharts"); install.packages("Rcampdf", repos = "http://datacube.wu.ac.at/", type = "source")'
+RUN installGithub.r --deps TRUE ramnathv/rCharts \    
+&& install.r --repos http://datacube.wu.ac.at Rcampdf \
+&& Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("rhdf5", ask=FALSE); biocLite("BiocInstaller")'
+
+## Github-dev versions of the R packages already on CRAN
+## Non-alphabetized since order reflects package dependencies
+RUN installGithub --deps TRUE \ 
+    ropensci/rinat \
+		ropensci/spocc \
+		ropensci/AntWeb \
+		ropensci/ecoengine \
+		ropensci/rebird \
+		ropensci/rfisheries \
+		ropensci/treebase \
+		ropensci/rbhl \
+		ropensci/rgbif \
+		ropensci/taxize \
+		ropensci/rsnps \
+		ropensci/rentrez \
+		ropensci/rnoaa \
+		ropensci/rdryad \
+		ropensci/RSelenium \
+		ropensci/rbison \
+		ropensci/bold \
+		ropensci/rplos \
+		ropensci/aRxiv \
+		ropensci/rAltmetric \
+		ropensci/alm \
+		ropensci/rfigshare \
+		ropensci/dvn \
+		ropensci/RNeXML \
+		ropensci/solr \
+		ropensci/Reol \
+		ropensci/rWBclimate \
+&& rm -rf /tmp/downloaded_packages/
+
+## Packages not yet on CRAN
+## Non-alphabetized since order reflects package dependencies
+RUN installGithub --deps TRUE \
+    ropensci/rnpn \
+		ropensci/rvertnet \
+		ropensci/gender \
+		ropensci/geonames \
+		ropensci/clifro \
+		ropensci/ecoretriever \
+		ropensci/traits \
+		ropensci/rebi \
+		ropensci/rorcid \
+		ropensci/elife \
+		ropensci/rdatacite \
+		ropensci/bmc \
+		ropensci/rcrossref \
+		ropensci/rmetadata \
+		ropensci/EML \
+		ropensci/git2r \
+		ropensci/testdat \
+		ropensci/gistr \
+		ropensci/elastic \
+		ropensci/plotly \
+		ropensci/togeojson \ 
+    ropensci/fulltext \ 
+    ropensci/rMaps \
+    ropensci/rfishbase \
+&& rm -rf /tmp/downloaded_packages/
+
 
 ## Packages needing further configuration before install will work: 
-RUN Rscript -e 'devtools::install_github(paste0("ropensci/", c("fulltext", "rMaps")))'
 
 #RUN Rscript -e 'devtools::install_github(paste0("ropensci/", c(rfishbase", "paleobioDB", "rAvis")) 
