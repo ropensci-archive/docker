@@ -1,4 +1,4 @@
-FROM eddelbuettel/docker-ubuntu-r:add-r 
+FROM rocker/r-base
 MAINTAINER Carl Boettiger cboettig@ropensci.org
 
 ## Shiny
