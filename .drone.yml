@@ -1,6 +1,7 @@
-image: cboettig/rstudio
+image: rocker/rstudio
 script:
   - R --version
+  - userconf.sh
 notify:
   email:
     recipients:
