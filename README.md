@@ -1,4 +1,5 @@
-## Docker for ROpenSci
+# docker
 
+[![Project Status: Abandoned](https://www.repostatus.org/badges/latest/abandoned.svg)](https://www.repostatus.org/#abandoned)
 
-:no_entry:   _This repository has moved! <https://github.com/rocker-org/ropensci>_
+This repository has been archived. The former README is now in [README-NOT.md](README-NOT.md).
